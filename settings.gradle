@@ -1,0 +1,2 @@
+include ':PhotoGallery'
+rootProject.name = "AndroidPractice"
