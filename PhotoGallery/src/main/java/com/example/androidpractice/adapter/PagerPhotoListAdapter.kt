@@ -14,9 +14,9 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.androidpractice.R
 import com.example.androidpractice.model.PhotoItem
-import io.supercharge.shimmerlayout.ShimmerLayout
 import kotlinx.android.synthetic.main.pager_photo_view.view.*
 
+// 查看大图界面的adapter
 class PagerPhotoListAdapter : ListAdapter<PhotoItem, PagerPhotoListAdapter.PagerPhotoViewHolder>(
     DIFF_CALLBACK
 ) {
@@ -32,51 +32,57 @@ class PagerPhotoListAdapter : ListAdapter<PhotoItem, PagerPhotoListAdapter.Pager
         }
     }
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagerPhotoViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.pager_photo_view, parent, false)
-        val holder = PagerPhotoViewHolder(view)
-        return holder
+        return PagerPhotoViewHolder.newInstance(parent)
     }
 
     override fun onBindViewHolder(holder: PagerPhotoViewHolder, position: Int) {
-        holder.itemView.shimmerLayout.apply {
-            setShimmerColor(0x55ffffff)
-            setShimmerAngle(0)
-            startShimmerAnimation()
-        }
-        Glide.with(holder.itemView)
-            .load(getItem(position).fullUrl)
-            .placeholder(R.drawable.ic_photo_gray)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false.also {
-                        holder.itemView.shimmerLayout?.stopShimmerAnimation()
-                    }
-                }
-
-            })
-            .into(holder.itemView.pagerPhoto)
+        val photoItem = getItem(position)
+        holder.bindViewWithPhotoItem(photoItem)
     }
 
-    inner class PagerPhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class PagerPhotoViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        companion object {
+            fun newInstance(parent: ViewGroup): PagerPhotoViewHolder {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.pager_photo_view, parent, false)
+                return PagerPhotoViewHolder(view)
+            }
+        }
 
+        fun bindViewWithPhotoItem(photoItem: PhotoItem) {
+            itemView.shimmerLayout.apply {
+                setShimmerColor(0x55ffffff)
+                setShimmerAngle(0)
+                startShimmerAnimation()
+            }
+            Glide.with(itemView)
+                .load(photoItem.fullUrl)
+                .placeholder(R.drawable.ic_photo_gray)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return false.also {
+                            itemView.shimmerLayout?.stopShimmerAnimation()
+                        }
+                    }
+
+                })
+                .into(itemView.pagerPhoto)
+        }
     }
 }

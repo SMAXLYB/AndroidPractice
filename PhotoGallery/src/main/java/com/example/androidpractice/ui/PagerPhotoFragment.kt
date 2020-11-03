@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +14,15 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.get
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.androidpractice.R
 import com.example.androidpractice.adapter.PagerPhotoListAdapter
 import com.example.androidpractice.adapter.PagerPhotoListAdapter.PagerPhotoViewHolder
-import com.example.androidpractice.R
-import com.example.androidpractice.model.PhotoItem
+import com.example.androidpractice.model.GalleryViewModel
 import kotlinx.android.synthetic.main.fragment_pager_photo.*
 import kotlinx.android.synthetic.main.pager_photo_view.view.*
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +34,7 @@ import kotlinx.coroutines.withContext
 const val REQUEST_WRITE_EXTERNAL_STORAGE: Int = 1
 
 class PagerPhotoFragment : Fragment() {
-
+    val viewModel by activityViewModels<GalleryViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,23 +46,23 @@ class PagerPhotoFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         // 设置adapter和数据源
-        val photoList = arguments?.getParcelableArrayList<PhotoItem>("PHOTO_LIST")
-
         val pagerPhotoListAdapter = PagerPhotoListAdapter().apply {
             viewPager2.adapter = this
-            submitList(photoList)
+        }
+        viewModel.pagedListLiveData.observe(viewLifecycleOwner) {
+            pagerPhotoListAdapter.submitList(it)
+            // 设置当前页面
+            viewPager2.setCurrentItem(arguments?.getInt("PHOTO_POSITION") ?: 0, false)
         }
 
         // 注册滑动监听
         viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                photoTag.text = getString(R.string.photo_tag, position + 1, photoList?.size)
+                photoTag.text = getString(R.string.photo_tag, position + 1, viewModel.pagedListLiveData.value?.size)
             }
         })
 
-        // 设置当前页面
-        viewPager2.setCurrentItem(arguments?.getInt("PHOTO_POSITION") ?: 0, false)
         // 切换方向
         // viewPager2.orientation = ViewPager2.ORIENTATION_VERTICAL
 

@@ -3,7 +3,9 @@ package com.example.androidpractice.net
 import android.content.Context
 import android.util.Log
 import okhttp3.Cache
+import okhttp3.Callback
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -14,10 +16,9 @@ class OkHttpSingleton private constructor(context: Context) {
             INSTANCE ?: synchronized(this) {
                 OkHttpSingleton(context).also { INSTANCE = it }
             }
-
     }
 
-    val okHttpClient by lazy {
+    private val okHttpClient by lazy {
         OkHttpClient.Builder()
             .connectTimeout(6, TimeUnit.SECONDS)
             .readTimeout(6, TimeUnit.SECONDS)
@@ -28,5 +29,13 @@ class OkHttpSingleton private constructor(context: Context) {
             }
             .cache(Cache(File(context.cacheDir, "cache"), 1024 * 1024 * 20))
             .build()
+    }
+
+    fun doGet(url: String, callback: Callback) {
+        val request = Request.Builder()
+            .url(url)
+            .build()
+        okHttpClient.newCall(request)
+            .enqueue(callback)
     }
 }
