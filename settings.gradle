@@ -1,2 +1,3 @@
+include ':FlowLayoutVIew'
 include ':PhotoGallery'
 rootProject.name = "AndroidPractice"
