@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.WelcomeFragment">
+
+    <ImageView
+        android:id="@+id/iv_bg"
+        style="@style/ZeroZero.CenterHorizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/welcome_bg"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.45"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/text_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="52dp"
+        android:gravity="center"
+        android:inputType="textMultiLine"
+        android:text="Hoo is a App about sneakers.\n If you want to learn more about sneakers \n Let's Begin"
+        android:textColor="@color/textPrimary"
+        android:textSize="@dimen/txt_larger_size"
+        app:layout_constraintBottom_toTopOf="@id/btn_login"
+        app:layout_constraintTop_toBottomOf="@id/iv_bg"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/btn_login"
+        style="@style/ZeroZero.CenterHorizontal.CommonButtonStyle"
+        android:layout_marginBottom="10dp"
+        android:text="Have a account ? Login"
+        app:layout_constraintBottom_toTopOf="@id/btn_register"
+        app:layout_constraintTop_toBottomOf="@id/text_content"
+        tools:ignore="MissingConstraints" />
+
+
+    <Button
+        android:id="@+id/btn_register"
+        style="@style/ZeroZero.CenterHorizontal.CommonButtonStyle"
+        android:text="Join us"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_login"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

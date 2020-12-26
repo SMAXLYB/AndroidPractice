@@ -11,9 +11,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/Animationdemo" />
             <option value="$PROJECT_DIR$/FlowLayoutVIew" />
             <option value="$PROJECT_DIR$/HiltDemo" />
             <option value="$PROJECT_DIR$/PhotoGallery" />
+            <option value="$PROJECT_DIR$/mvvmdemo" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

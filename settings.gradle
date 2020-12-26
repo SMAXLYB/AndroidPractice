@@ -1,3 +1,5 @@
+include ':mvvmdemo'
+include ':Animationdemo'
 include ':HiltDemo'
 include ':FlowLayoutVIew'
 include ':PhotoGallery'

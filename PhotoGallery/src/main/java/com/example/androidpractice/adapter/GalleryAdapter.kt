@@ -22,7 +22,7 @@ import com.example.androidpractice.model.GalleryViewModel
 import com.example.androidpractice.model.PhotoItem
 import kotlinx.android.synthetic.main.gallery_cell.view.*
 import kotlinx.android.synthetic.main.gallery_footer.view.*
-import java.util.ArrayList
+import java.util.*
 
 class GalleryAdapter(private val galleryViewModel: GalleryViewModel) :
     ListAdapter<PhotoItem, GalleryAdapter.MyViewHolder>(DIFF_CALLBACK) {
